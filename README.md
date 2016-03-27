@@ -1,6 +1,3 @@
-# proxl-import-crux
-Convert output from Crux search-for-xlinks to ProXL XML.
-
 Crux (search-for-xlinks) to ProXL XML Converter
 =====================================================
 
