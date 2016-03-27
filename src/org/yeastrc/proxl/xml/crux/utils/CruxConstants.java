@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class CruxConstants {
 
-	public static final String SEARCH_PROGRAM_NAME = "Crux (search-for-xlinks)";
+	public static final String SEARCH_PROGRAM_NAME = "Crux";
 	
 	// all crux-identified peptides must be one of these types
 	public static final int LINK_TYPE_CROSSLINK = 0;
