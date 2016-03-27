@@ -1,4 +1,4 @@
-package org.yeastrc.proxl.crux.main;
+package org.yeastrc.proxl.xml.crux.main;
 
 import java.io.BufferedReader;
 import java.io.File;
