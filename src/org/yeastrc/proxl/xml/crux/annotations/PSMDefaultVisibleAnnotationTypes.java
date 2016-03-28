@@ -22,12 +22,14 @@ public class PSMDefaultVisibleAnnotationTypes {
 			annotations.add( annotation );
 		}
 		
+		/*
 		{
 			SearchAnnotation annotation = new SearchAnnotation();
 			annotation.setAnnotationName( CruxConstants.COLUMN_HEADER_XCORR_RANK );
 			annotation.setSearchProgram( CruxConstants.SEARCH_PROGRAM_NAME );
 			annotations.add( annotation );
 		}
+		*/
 		
 		{
 			SearchAnnotation annotation = new SearchAnnotation();

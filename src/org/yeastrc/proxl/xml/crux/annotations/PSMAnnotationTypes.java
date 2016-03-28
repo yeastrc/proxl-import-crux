@@ -31,6 +31,7 @@ public class PSMAnnotationTypes {
 			types.add( type );
 		}
 		
+		/*
 		//xcorr rank
 		{
 			FilterablePsmAnnotationType type = new FilterablePsmAnnotationType();
@@ -42,6 +43,7 @@ public class PSMAnnotationTypes {
 			
 			types.add( type );
 		}
+		*/
 
 		//xcorr
 		{

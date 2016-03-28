@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.yeastrc.proxl.xml.crux.annotations.PSMAnnotationTypeSortOrder;
 import org.yeastrc.proxl.xml.crux.annotations.PSMAnnotationTypes;
 import org.yeastrc.proxl.xml.crux.annotations.PSMDefaultVisibleAnnotationTypes;
 import org.yeastrc.proxl.xml.crux.objects.CruxModification;
@@ -15,6 +16,7 @@ import org.yeastrc.proxl.xml.crux.objects.CruxReportedPeptide;
 import org.yeastrc.proxl.xml.crux.objects.CruxResult;
 import org.yeastrc.proxl.xml.crux.utils.CruxConstants;
 import org.yeastrc.proxl.xml.crux.utils.NumberUtils;
+import org.yeastrc.proxl_import.api.xml_dto.AnnotationSortOrder;
 import org.yeastrc.proxl_import.api.xml_dto.ConfigurationFile;
 import org.yeastrc.proxl_import.api.xml_dto.ConfigurationFiles;
 import org.yeastrc.proxl_import.api.xml_dto.CrosslinkMass;
@@ -39,9 +41,11 @@ import org.yeastrc.proxl_import.api.xml_dto.Peptide;
 import org.yeastrc.proxl_import.api.xml_dto.Peptides;
 import org.yeastrc.proxl_import.api.xml_dto.ProxlInput;
 import org.yeastrc.proxl_import.api.xml_dto.Psm;
+import org.yeastrc.proxl_import.api.xml_dto.PsmAnnotationSortOrder;
 import org.yeastrc.proxl_import.api.xml_dto.Psms;
 import org.yeastrc.proxl_import.api.xml_dto.ReportedPeptide;
 import org.yeastrc.proxl_import.api.xml_dto.ReportedPeptides;
+import org.yeastrc.proxl_import.api.xml_dto.SearchAnnotation;
 import org.yeastrc.proxl_import.api.xml_dto.SearchProgram;
 import org.yeastrc.proxl_import.api.xml_dto.SearchProgramInfo;
 import org.yeastrc.proxl_import.api.xml_dto.SearchPrograms;
@@ -108,6 +112,20 @@ public class XMLBuilder {
 		xmlDefaultVisibleAnnotations.setVisiblePsmAnnotations( xmlVisiblePsmAnnotations );
 
 		xmlVisiblePsmAnnotations.getSearchAnnotation().addAll( PSMDefaultVisibleAnnotationTypes.getDefaultVisibleAnnotationTypes() );
+		
+		
+		//
+		// Define the sort order
+		//
+		AnnotationSortOrder annotationSortOrder = new AnnotationSortOrder();
+		searchProgramInfo.setAnnotationSortOrder( annotationSortOrder );
+		
+		PsmAnnotationSortOrder psmAnnotationSortOrder = new PsmAnnotationSortOrder();
+		annotationSortOrder.setPsmAnnotationSortOrder( psmAnnotationSortOrder );
+		
+		psmAnnotationSortOrder.getSearchAnnotation().addAll( PSMAnnotationTypeSortOrder.getPSMAnnotationTypeSortOrder() );
+		
+
 		
 		//
 		// Define the linker information
@@ -318,6 +336,7 @@ public class XMLBuilder {
 					xmlFilterablePsmAnnotation.setValue( NumberUtils.getScientificNotationBigDecimal( result.getqValueDecoy() ) );
 				}
 				
+				/*
 				{
 					FilterablePsmAnnotation xmlFilterablePsmAnnotation = new FilterablePsmAnnotation();
 					xmlFilterablePsmAnnotations.getFilterablePsmAnnotation().add( xmlFilterablePsmAnnotation );
@@ -326,6 +345,7 @@ public class XMLBuilder {
 					xmlFilterablePsmAnnotation.setSearchProgram( CruxConstants.SEARCH_PROGRAM_NAME );
 					xmlFilterablePsmAnnotation.setValue( NumberUtils.getRoundedBigDecimal( result.getxCorrRank(), 1 ) );
 				}
+				*/
 				
 				{
 					FilterablePsmAnnotation xmlFilterablePsmAnnotation = new FilterablePsmAnnotation();
