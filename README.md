@@ -5,7 +5,7 @@ Use this program to convert the results of a Crux (search-for-xlinks) cross-link
 
 How To Run
 -------------
-1. Download the [latest release](https://github.com/yeastrc/crux-import-plink/releases).
+1. Download the [latest release](https://github.com/yeastrc/proxl-import-crux/releases).
 2. Run the program ``java -jar crux2ProxlXML.jar`` with no arguments to see the possible parameters.
 3. Run the program, e.g., ``java -jar crux2ProxlML.jar -r ./crux-output -f yeast.fasta -l dss -m 138.0680742 -o ./output.proxl.xml``
 
