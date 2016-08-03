@@ -41,10 +41,10 @@ public class ParamsLoader {
 	 * @return
 	 * @throws Exception
 	 */
-	public CruxParams loadParams( File cruxAnalysisDirectory, String fastaFilename, String linkerName, double linkerMass ) throws Exception {
+	public CruxParams loadParams( File cruxAnalysisDirectory, String fastaFilePath, String linkerName, double linkerMass ) throws Exception {
 		CruxParams params = new CruxParams();
 		
-		params.setFastaFilename( fastaFilename );
+		params.setFastaFilename( (new File( fastaFilePath ) ).getName() );
 		params.setLinkerMass( linkerMass );
 		params.setLinkerName( linkerName );
 		params.setAnalysisDirectory( cruxAnalysisDirectory );

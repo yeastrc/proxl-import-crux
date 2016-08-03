@@ -64,7 +64,7 @@ import org.yeastrc.proxl_import.create_import_file_from_java_objects.main.Create
  */
 public class XMLBuilder {
 
-	public void buildAndSaveXML( CruxParams params, Collection<CruxResult> results, File outfile ) throws Exception {
+	public void buildAndSaveXML( CruxParams params, Collection<CruxResult> results, File outfile, File fastaFile, Collection<String> decoyLabels ) throws Exception {
 		
 		ProxlInput proxlInputRoot = new ProxlInput();
 		
@@ -166,22 +166,12 @@ public class XMLBuilder {
 		DecoyLabels xmlDecoyLabels = new DecoyLabels();
 		proxlInputRoot.setDecoyLabels( xmlDecoyLabels );
 		
-		{
+		for( String decoyLabel : decoyLabels ) {
 			DecoyLabel xmlDecoyLabel = new DecoyLabel();
 			xmlDecoyLabels.getDecoyLabel().add( xmlDecoyLabel );
 			
-			xmlDecoyLabel.setPrefix( "random" );
+			xmlDecoyLabel.setPrefix( decoyLabel );
 		}
-		
-		{
-			DecoyLabel xmlDecoyLabel = new DecoyLabel();
-			xmlDecoyLabels.getDecoyLabel().add( xmlDecoyLabel );
-			
-			xmlDecoyLabel.setPrefix( "decoy" );
-		}
-		
-		
-		
 		
 		//
 		// Define the peptide and PSM data
@@ -505,6 +495,8 @@ public class XMLBuilder {
 			
 		}// end iterating over distinct reported peptides
 		
+		// add matched proteins
+		MatchedProteinsBuilder.getInstance().buildMatchedProteins(proxlInputRoot, fastaFile, decoyLabels);
 		
 		// add in the config file(s)
 		ConfigurationFiles xmlConfigurationFiles = new ConfigurationFiles();

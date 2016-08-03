@@ -2,16 +2,16 @@
 Convert the results of a Crux search-for-xlinks analysis to ProXML suitable for
 input into ProXL.
 
-Usage: java -jar crux2ProxlXML.jar -r /path/to/results_dir -f fasta_file.fasta -l linker_name -m linker_mass -o /path/to/output.xml
+Usage: java -jar crux2ProxlXML.jar -r /path/to/results_dir -f /path/to/fasta_file.fasta -l linker_name -m linker_mass -d decoy label -o /path/to/output.xml
 
-Example: java -jar crux2ProxlML.jar -r ./crux-output -f yeast.fasta -l dss -m 138.0680742 -o ./analysis.proxl.xml
+Example: java -jar crux2ProxlML.jar -r ./crux-output -f yeast.fasta -l dss -m 138.0680742 -d random -o ./analysis.proxl.xml
 
 Options:
 
     -r : Full or relative path to the results directory created by the crux
          analysis. Typically "crux-output".
     
-    -f : Name of FASTA file, without the path. E.g. yeast.fasta
+    -f : Full or relative path to FASTA file used in the search
     
     -l : Name of the cross-linker used, as recognized by Proxl. Currently-
          supported values are dss, bs3, bs3, and edc.
@@ -19,6 +19,11 @@ Options:
     -m : The mass of the linker passed into crux at runtime. As of this
          writing, Crux search-for-xlinks supports passing in a single
          mass.
+
+    -d : (Optional, may be used multiple times.) A label to use to identify
+         decoys. (E.g., random or decoy) Any protein name containing any of
+         the supplied decoy labels will be considered a decoy (case-
+         insensitive.) If not present, no proteins will be considered decoys.
     
     -o : The full or relative path of the desired output file, into which
          the ProXL XML will be written.
