@@ -6,6 +6,8 @@ public class CruxConstants {
 
 	public static final String SEARCH_PROGRAM_NAME = "Crux";
 	
+	public static final String DEFAULT_IMPORT_CUTOFF = "0.05";
+	
 	// all crux-identified peptides must be one of these types
 	public static final int LINK_TYPE_CROSSLINK = 0;
 	public static final int LINK_TYPE_MONOLINK = 1;

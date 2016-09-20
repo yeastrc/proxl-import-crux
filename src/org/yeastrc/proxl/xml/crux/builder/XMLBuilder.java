@@ -1,6 +1,7 @@
 package org.yeastrc.proxl.xml.crux.builder;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +17,7 @@ import org.yeastrc.proxl.xml.crux.objects.CruxReportedPeptide;
 import org.yeastrc.proxl.xml.crux.objects.CruxResult;
 import org.yeastrc.proxl.xml.crux.utils.CruxConstants;
 import org.yeastrc.proxl.xml.crux.utils.NumberUtils;
+import org.yeastrc.proxl_import.api.xml_dto.AnnotationCutoffsOnImport;
 import org.yeastrc.proxl_import.api.xml_dto.AnnotationSortOrder;
 import org.yeastrc.proxl_import.api.xml_dto.ConfigurationFile;
 import org.yeastrc.proxl_import.api.xml_dto.ConfigurationFiles;
@@ -41,11 +43,12 @@ import org.yeastrc.proxl_import.api.xml_dto.Peptide;
 import org.yeastrc.proxl_import.api.xml_dto.Peptides;
 import org.yeastrc.proxl_import.api.xml_dto.ProxlInput;
 import org.yeastrc.proxl_import.api.xml_dto.Psm;
+import org.yeastrc.proxl_import.api.xml_dto.PsmAnnotationCutoffsOnImport;
 import org.yeastrc.proxl_import.api.xml_dto.PsmAnnotationSortOrder;
 import org.yeastrc.proxl_import.api.xml_dto.Psms;
 import org.yeastrc.proxl_import.api.xml_dto.ReportedPeptide;
 import org.yeastrc.proxl_import.api.xml_dto.ReportedPeptides;
-import org.yeastrc.proxl_import.api.xml_dto.SearchAnnotation;
+import org.yeastrc.proxl_import.api.xml_dto.SearchAnnotationCutoff;
 import org.yeastrc.proxl_import.api.xml_dto.SearchProgram;
 import org.yeastrc.proxl_import.api.xml_dto.SearchProgramInfo;
 import org.yeastrc.proxl_import.api.xml_dto.SearchPrograms;
@@ -64,7 +67,7 @@ import org.yeastrc.proxl_import.create_import_file_from_java_objects.main.Create
  */
 public class XMLBuilder {
 
-	public void buildAndSaveXML( CruxParams params, Collection<CruxResult> results, File outfile, File fastaFile, Collection<String> decoyLabels ) throws Exception {
+	public void buildAndSaveXML( CruxParams params, Collection<CruxResult> results, File outfile, File fastaFile, Collection<String> decoyLabels, BigDecimal importCutoff ) throws Exception {
 		
 		ProxlInput proxlInputRoot = new ProxlInput();
 		
@@ -126,6 +129,24 @@ public class XMLBuilder {
 		psmAnnotationSortOrder.getSearchAnnotation().addAll( PSMAnnotationTypeSortOrder.getPSMAnnotationTypeSortOrder() );
 		
 
+		/*
+		 * Define the default import cutoffs
+		 */
+		if( importCutoff != null  && importCutoff.floatValue() < 1.0 ) {
+			AnnotationCutoffsOnImport annotationCutoffsOnImport = new AnnotationCutoffsOnImport();
+			searchProgramInfo.setAnnotationCutoffsOnImport( annotationCutoffsOnImport );
+			
+			PsmAnnotationCutoffsOnImport psmAnnotationCutoffsOnImport = new PsmAnnotationCutoffsOnImport();
+			annotationCutoffsOnImport.setPsmAnnotationCutoffsOnImport( psmAnnotationCutoffsOnImport );
+			
+			SearchAnnotationCutoff searchAnnotationCutoff = new SearchAnnotationCutoff();
+			searchAnnotationCutoff.setAnnotationName( CruxConstants.COLUMN_HEADER_Q_VALUE_DECOY );
+			searchAnnotationCutoff.setSearchProgram( CruxConstants.SEARCH_PROGRAM_NAME );
+			searchAnnotationCutoff.setCutoffValue( importCutoff );
+			
+			psmAnnotationCutoffsOnImport.getSearchAnnotationCutoff().add( searchAnnotationCutoff );
+		}
+		
 		
 		//
 		// Define the linker information

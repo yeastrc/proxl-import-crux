@@ -27,3 +27,7 @@ Options:
     
     -o : The full or relative path of the desired output file, into which
          the ProXL XML will be written.
+         
+    -i : (Optional) The cutoff to use for decoy-based q-values when importing
+         data into ProXL. Default if 0.05. Set to 1 or more to disable
+         import filtering.

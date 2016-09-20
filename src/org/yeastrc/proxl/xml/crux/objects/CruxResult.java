@@ -1,6 +1,5 @@
 package org.yeastrc.proxl.xml.crux.objects;
 
-import java.util.Map;
 
 public class CruxResult {
 

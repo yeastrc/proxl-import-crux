@@ -3,6 +3,7 @@ package org.yeastrc.proxl.xml.crux.main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -10,6 +11,7 @@ import org.yeastrc.proxl.xml.crux.objects.CruxParams;
 import org.yeastrc.proxl.xml.crux.objects.CruxResult;
 import org.yeastrc.proxl.xml.crux.reader.ParamsLoader;
 import org.yeastrc.proxl.xml.crux.reader.ResultsLoader;
+import org.yeastrc.proxl.xml.crux.utils.CruxConstants;
 import org.yeastrc.proxl.xml.crux.builder.*;
 
 import jargs.gnu.CmdLineParser;
@@ -18,13 +20,13 @@ import jargs.gnu.CmdLineParser.UnknownOptionException;
 
 public class MainProgram {
 
-	public void convertSearch( String outputFile, File resultsDirectory, String fastaFilePath, String linkerName, Double linkerMass, Collection<String> decoyLabels ) throws Exception {
+	public void convertSearch( String outputFile, File resultsDirectory, String fastaFilePath, String linkerName, Double linkerMass, Collection<String> decoyLabels, BigDecimal importCutoff ) throws Exception {
 		
 		CruxParams params = ParamsLoader.getInstance().loadParams( resultsDirectory, fastaFilePath, linkerName, linkerMass );
 		Collection<CruxResult> results = ResultsLoader.getInstance().loadResults( params );
 		
 		XMLBuilder builder = new XMLBuilder();
-		builder.buildAndSaveXML(params, results, new File( outputFile ), new File( fastaFilePath ), decoyLabels ); 
+		builder.buildAndSaveXML(params, results, new File( outputFile ), new File( fastaFilePath ), decoyLabels, importCutoff ); 
 		
 	}
 	
@@ -49,6 +51,8 @@ public class MainProgram {
 		CmdLineParser.Option linkerMassOpt = cmdLineParser.addDoubleOption( 'm', "linker-mass" );
 		CmdLineParser.Option outputFileOpt = cmdLineParser.addStringOption( 'o', "output-file" );	
 		CmdLineParser.Option decoyOpt = cmdLineParser.addStringOption( 'd', "decoy-label" );	
+		CmdLineParser.Option importFilterCutoffOpt = cmdLineParser.addStringOption( 'i', "import-filter" );
+
 
         // parse command line options
         try { cmdLineParser.parse(args); }
@@ -101,8 +105,24 @@ public class MainProgram {
 		Vector<String> decoyLabels = (Vector<String>)cmdLineParser.getOptionValues( decoyOpt );
         
         
+        BigDecimal importCutoff = null;
+        String importCutoffString = (String)cmdLineParser.getOptionValue( importFilterCutoffOpt );
+        
+        if( importCutoffString != null ) {
+	        try { importCutoff = new BigDecimal( importCutoffString ); }
+	        catch( Exception e ) {
+	        	System.err.println( "Expected a number for the import cutoff filter, got: " + importCutoffString );
+	        	System.exit( 1 );
+	        }
+        }
+        
+        if( importCutoff == null )
+        	importCutoff = new BigDecimal( CruxConstants.DEFAULT_IMPORT_CUTOFF );
+        
+        
+        
 		MainProgram mp = new MainProgram();
-		mp.convertSearch( outputFile, resultsDirectory, fastaFilename, linkerName, linkerMass, decoyLabels );
+		mp.convertSearch( outputFile, resultsDirectory, fastaFilename, linkerName, linkerMass, decoyLabels, importCutoff );
 	}
 	
 	public static void printHelp() {
